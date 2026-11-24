@@ -1,0 +1,10 @@
+name: AirControl
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      - opencv-contrib-python==5.0.0.93
+      - mediapipe==1.1.1
+      - PyAutoGUI==0.9.54
