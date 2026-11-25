@@ -1,6 +1,6 @@
-"""Default entry point for the stage 7 preview and guarded mouse prototype."""
+"""Default Scheme B entry point; real input requires C or --control."""
 
-from stage7_mouse_control import main
+from aircontrol.aircontrol_app import main
 
 
 if __name__ == "__main__":
