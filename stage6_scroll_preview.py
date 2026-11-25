@@ -53,7 +53,7 @@ class Stage6Session(Stage5Session):
 
 def draw_status(frame, hand, fps: float, state: GestureState, config: Config,
                 screen_size: tuple[int, int], position: CursorPosition | None,
-                controller: ScrollController, events: list[ActionEvent | ScrollEvent],
+                controller: ScrollController, events: list[ActionEvent | ScrollEvent | str],
                 action_controller: ClickDragController | None = None,
                 status_note: str = "SIMULATION ONLY - no real mouse input | Q / Esc: quit",
                 stage_number: int = 6, real_button_down: bool | None = None,
@@ -81,7 +81,15 @@ def draw_status(frame, hand, fps: float, state: GestureState, config: Config,
         lines.insert(1, f"Mode: {mode_label}")
     if output_status is not None:
         lines.insert(2, f"Output: {output_status}")
-    lines.extend(f"{event.kind}{f' x{event.amount}' if getattr(event, 'amount', 0) else ''}{f' ({event.reason})' if event.reason else ''}" for event in events)
+    for event in events:
+        if isinstance(event, str):
+            lines.append(event)
+        else:
+            lines.append(
+                f"{event.kind}"
+                f"{f' x{event.amount}' if getattr(event, 'amount', 0) else ''}"
+                f"{f' ({event.reason})' if event.reason else ''}"
+            )
     panel_width = min(width - 24, 560)
     panel_height = min(height - 24, 24 + 22 * len(lines))
     cv2.rectangle(frame, (8, 8), (8 + panel_width, 8 + panel_height), (25, 25, 25), -1)

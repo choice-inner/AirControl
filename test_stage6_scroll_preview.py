@@ -109,6 +109,15 @@ class Stage6SessionTests(unittest.TestCase):
                         state, Config(), (1000, 1000), position, self.session.scroll, events)
         self.assertFalse(screen.call_args.args[3])
 
+    def test_render_accepts_preformatted_event_strings(self):
+        state, position, _ = self.settle(hand())
+        frame = np.zeros((480, 640, 3), dtype=np.uint8)
+        with patch("stage6_scroll_preview.cv2.putText") as put_text:
+            draw_status(frame, hand(), 30, state, Config(), (1000, 1000), position,
+                        self.session.scroll, ["CLICK x=120 y=240"], self.session.controller)
+        rendered = [call.args[1] for call in put_text.call_args_list]
+        self.assertIn("CLICK x=120 y=240", rendered)
+
 
 if __name__ == "__main__":
     unittest.main()
